@@ -254,13 +254,13 @@
     </footer>
 
 <script>
-const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTNUfLyL-KfX-D0lUwfPcVB2eusMX5jG9p5mz5PeSOfyvVHxb1WJSNw24DgZ-4L7o_yUeYNEopIxva9/pub?gid=0&single=true&output=csv';
+const sheetUrl = 'https://script.google.com/macros/s/AKfycbwYwWoDLrf60qs-Mi6W2BF2qbQ0q3DAnw6TQqdaHXEGe2m3AtiZ0SUAAjW9gdR9D0U/exec';
 const wrapper = document.getElementById('scroll-wrapper');
 const list = document.getElementById('score-list');
 const refreshBtn = document.getElementById('refresh-btn');
 let y = 0;
 
-// Format timestamp
+// Format waktu
 function formatTime(date) {
     return date.toLocaleTimeString('id-ID', {
         hour: '2-digit',
@@ -269,7 +269,6 @@ function formatTime(date) {
     });
 }
 
-// Format date
 function formatDate(date) {
     return date.toLocaleDateString('id-ID', {
         weekday: 'long',
@@ -279,78 +278,57 @@ function formatDate(date) {
     });
 }
 
-// Update current time
 function updateCurrentTime() {
     const now = new Date();
-    document.getElementById('time-now').textContent = 
+    document.getElementById('time-now').textContent =
         `${formatDate(now)}, ${formatTime(now)}`;
 }
 
-// Fungsi ambil dan tampilkan data
+// Ambil dan tampilkan data dari Apps Script
 async function fetchScores() {
     try {
         const response = await fetch(sheetUrl);
-        const data = await response.text();
-        let rows = data.split('\n').slice(1); // skip header
+        const data = await response.json();
 
-        rows = rows.filter(row => row.trim() !== '');
+        data.sort((a, b) => parseInt(b.nilai) - parseInt(a.nilai));
 
-        // Urutkan berdasarkan nilai terbesar
-        rows.sort((a, b) => {
-            const nilaiA = parseInt(a.split(',')[2]);
-            const nilaiB = parseInt(b.split(',')[2]);
-            return nilaiB - nilaiA;
-        });
-
-        // Kosongkan list
         list.innerHTML = '';
 
-        // Buat list item baru
-        rows.forEach((row, index) => {
-            const cols = row.split(',');
-            const kelas = cols[0]?.trim();
-            const nama = cols[1]?.trim();
-            const nilai = cols[2]?.trim();
-            
-            if (kelas && nama && nilai) {
-                const li = document.createElement('li');
-                li.className = `grid grid-cols-11 gap-4 py-3 px-6 score-item ${index < 3 ? 'top-score' : ''}`;
-                
-                li.innerHTML = `
-                    <div class="col-span-2 flex justify-center items-center text-blue-100">${kelas}</div>
-                    <div class="col-span-6 name-cell text-blue-50">${nama}</div>
-                    <div class="col-span-3 flex justify-end items-center font-bold ${index < 3 ? 'text-blue-300' : 'text-blue-100'}">
-                        ${nilai}
-                        ${index < 3 ? '<i class="fas fa-crown ml-2 crown-icon"></i>' : ''}
-                    </div>
-                `;
-                list.appendChild(li);
-            }
+        data.forEach((item, index) => {
+            const li = document.createElement('li');
+            li.className = `grid grid-cols-11 gap-4 py-3 px-6 score-item ${index < 3 ? 'top-score' : ''}`;
+
+            li.innerHTML = `
+                <div class="col-span-2 flex justify-center items-center text-blue-100">${item.kelas}</div>
+                <div class="col-span-6 name-cell text-blue-50">${item.nama}</div>
+                <div class="col-span-3 flex justify-end items-center font-bold ${index < 3 ? 'text-blue-300' : 'text-blue-100'}">
+                    ${item.nilai}
+                    ${index < 3 ? '<i class="fas fa-crown ml-2 crown-icon"></i>' : ''}
+                </div>
+            `;
+            list.appendChild(li);
         });
 
-        // Update footer info
         document.getElementById('last-update').textContent = `Terakhir diperbarui: ${formatTime(new Date())}`;
-        document.getElementById('total-participants').textContent = rows.length;
+        document.getElementById('total-participants').textContent = data.length;
 
         duplicateList();
     } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Gagal mengambil data dari Apps Script:', error);
     }
 }
 
-// Fungsi menggandakan isi list secara DOM
 function duplicateList() {
     const existingClone = document.getElementById('clone');
-    if (existingClone) existingClone.remove(); // hapus clone lama kalau ada
+    if (existingClone) existingClone.remove();
 
     const clone = list.cloneNode(true);
     clone.id = 'clone';
     wrapper.appendChild(clone);
 }
 
-// Scroll daftar
 function scrollList() {
-    y -= 1.5; // scroll pelan
+    y -= 1.5;
     wrapper.scrollTop = -y;
 
     const listHeight = list.offsetHeight;
@@ -360,7 +338,6 @@ function scrollList() {
     }
 }
 
-// Manual refresh
 refreshBtn.addEventListener('click', () => {
     refreshBtn.classList.add('animate-spin');
     fetchScores().finally(() => {
@@ -370,12 +347,11 @@ refreshBtn.addEventListener('click', () => {
     });
 });
 
-// Jalankan
 updateCurrentTime();
-setInterval(updateCurrentTime, 1000); // update waktu setiap detik
+setInterval(updateCurrentTime, 1000);
 fetchScores();
-setInterval(fetchScores, 10000); // refresh setiap 10 detik
-setInterval(scrollList, 40); // scroll setiap 30ms
+setInterval(fetchScores, 10000);
+setInterval(scrollList, 40);
 </script>
 </body>
 </html>
