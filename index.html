@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Score CPNS - Auto Loop Scroll + Header</title>
+    <title>Live Score Sumatif - SMP Negeri 1 Sukasada</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -18,6 +18,8 @@
             padding: 0;
             min-height: 100vh;
             color: #fff;
+            display: flex;
+            flex-direction: column;
         }
         
         @keyframes gradient {
@@ -110,13 +112,75 @@
             color: #4fc3f7;
             text-shadow: 0 0 8px rgba(100, 200, 255, 0.7);
         }
+        
+        .footer {
+            background: rgba(0, 20, 40, 0.5);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(100, 180, 255, 0.2);
+            margin-top: auto;
+            width: 100%;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        
+        .footer-links a {
+            transition: all 0.3s ease;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .footer-links a:hover {
+            color: #4fc3f7;
+            transform: translateY(-2px);
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(100, 180, 255, 0.1);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(100, 180, 255, 0.2);
+        }
+        
+        .social-icon:hover {
+            background: rgba(100, 180, 255, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .footer-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(100, 180, 255, 0.3), transparent);
+            margin: 20px 0;
+        }
+        
+        .copyright {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+        
+        .school-logo-footer {
+            filter: drop-shadow(0 0 5px rgba(100, 200, 255, 0.5));
+            transition: all 0.3s ease;
+        }
+        
+        .school-logo-footer:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 8px rgba(100, 200, 255, 0.7));
+        }
     </style>
 </head>
 <body class="flex flex-col items-center py-8 px-4">
     <div class="w-full max-w-6xl mb-4 flex items-center justify-center">
         <!-- School Logo -->
-        <div class="w-20 h-20 rounded-full bg-wh
-$0ite flex items-center justify-center shadow-lg pulse mr-4">
+        <div class="w-20 h-20 rounded-full bg-white flex items-center justify-center shadow-lg pulse mr-4">
             <img src="https://i.ibb.co.com/3YjdDh2N/logo-sekolah-FINAL.png" alt="Logo Sekolah" class="h-16 w-16 object-contain">
         </div>
         
@@ -167,6 +231,27 @@ $0ite flex items-center justify-center shadow-lg pulse mr-4">
         <i class="fas fa-info-circle mr-2"></i>
         <span>Data diperbarui otomatis setiap 10 detik</span>
     </div>
+
+    <!-- New Footer Section -->
+    <footer class="footer w-full mt-12">
+        <div class="footer-content">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0 flex items-center">
+                    <img src="https://i.ibb.co.com/3YjdDh2N/logo-sekolah-FINAL.png" alt="Logo Sekolah" class="school-logo-footer h-16 w-16 mr-4">
+                    <div>
+                        <h3 class="text-xl font-bold text-blue-300">SMP NEGERI 1 SUKASADA</h3>
+                        <p class="text-blue-200 opacity-80">Jl. Jelantik Gingsir No. 26, Sukasada</p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-divider"></div>
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="copyright mb-4 md:mb-0">
+                    <p>© 2025 SMP Negeri 1 Sukasada. All rights reserved. Gede Pujana</p>
+                </div>
+            </div>
+        </div>
+    </footer>
 
 <script>
 const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTNUfLyL-KfX-D0lUwfPcVB2eusMX5jG9p5mz5PeSOfyvVHxb1WJSNw24DgZ-4L7o_yUeYNEopIxva9/pub?gid=0&single=true&output=csv';
