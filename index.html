@@ -11,7 +11,7 @@
         
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364, #8e2de2, #4a00e0);
             background-size: 400% 400%;
             animation: gradient 15s ease infinite;
             margin: 0;
@@ -175,16 +175,33 @@
             transform: scale(1.05);
             filter: drop-shadow(0 0 8px rgba(100, 200, 255, 0.7));
         }
+
+        /* Enhanced text clarity */
+        .text-enhanced {
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+            font-weight: 500;
+        }
+
+        /* Improved contrast for better readability */
+        .scoreboard-header {
+            background: rgba(0, 30, 60, 0.8);
+        }
+
+        /* Enhanced glow effect */
+        .enhanced-glow {
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        }
         
+        /* Rank number styling */
         .rank-number {
-            width: 24px;
-            height: 24px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.8rem;
-            margin-right: 8px;
+            font-weight: bold;
+            margin-right: 10px;
         }
         
         .rank-1 {
@@ -216,13 +233,13 @@
         </div>
         
         <div class="text-center">
-            <h1 class="text-4xl font-bold header-glow mb-2">LIVE SCORE SUMATIF</h1>
-            <p class="text-lg opacity-80">SMP NEGERI 1 SUKASADA</p>
+            <h1 class="text-4xl font-bold header-glow enhanced-glow mb-2">LIVE SCORE SUMATIF</h1>
+            <p class="text-lg text-enhanced">SMP NEGERI 1 SUKASADA</p>
         </div>
     </div>
 
     <!-- Current Time Display -->
-    <div id="current-time" class="current-time flex items-center">
+    <div id="current-time" class="current-time flex items-center text-enhanced">
         <i class="fas fa-clock mr-2 text-blue-300"></i>
         <span id="time-now">Loading waktu...</span>
         <button id="refresh-btn" class="refresh-btn ml-4 p-2 rounded-full" title="Refresh Data">
@@ -232,7 +249,7 @@
 
     <div class="w-full max-w-4xl scoreboard overflow-hidden relative">
         <!-- Header -->
-        <div class="grid grid-cols-12 gap-4 py-4 px-6 bg-blue-900 bg-opacity-50 border-b border-blue-700 font-semibold">
+        <div class="grid grid-cols-12 gap-4 py-4 px-6 scoreboard-header border-b border-blue-700 font-semibold text-enhanced">
             <div class="col-span-1 flex justify-center items-center text-blue-200">No</div>
             <div class="col-span-2 flex justify-center items-center text-blue-200">Kelas</div>
             <div class="col-span-6 text-blue-200">Nama Peserta</div>
@@ -247,7 +264,7 @@
         </div>
         
         <!-- Footer -->
-        <div class="py-3 px-6 bg-blue-900 bg-opacity-30 text-sm text-center border-t border-blue-700 flex justify-between items-center">
+        <div class="py-3 px-6 bg-blue-900 bg-opacity-30 text-sm text-center border-t border-blue-700 flex justify-between items-center text-enhanced">
             <div class="text-blue-300">
                 <i class="fas fa-sync-alt mr-2"></i>
                 <span id="last-update">Terakhir diperbarui: -</span>
@@ -259,7 +276,7 @@
         </div>
     </div>
 
-    <div class="mt-8 text-sm opacity-70 flex items-center text-blue-200">
+    <div class="mt-8 text-sm text-enhanced flex items-center text-blue-200">
         <i class="fas fa-info-circle mr-2"></i>
         <span>Data diperbarui otomatis setiap 10 detik</span>
     </div>
@@ -271,14 +288,14 @@
                 <div class="mb-6 md:mb-0 flex items-center">
                     <img src="https://i.ibb.co.com/3YjdDh2N/logo-sekolah-FINAL.png" alt="Logo Sekolah" class="school-logo-footer h-16 w-16 mr-4">
                     <div>
-                        <h3 class="text-xl font-bold text-blue-300">SMP NEGERI 1 SUKASADA</h3>
-                        <p class="text-blue-200 opacity-80">Jl. Jelantik Gingsir No. 26, Sukasada</p>
+                        <h3 class="text-xl font-bold text-blue-300 text-enhanced">SMP NEGERI 1 SUKASADA</h3>
+                        <p class="text-blue-200 opacity-80 text-enhanced">Jl. Jelantik Gingsir No. 26, Sukasada</p>
                     </div>
                 </div>
             </div>
             <div class="footer-divider"></div>
             <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="copyright mb-4 md:mb-0">
+                <div class="copyright mb-4 md:mb-0 text-enhanced">
                     <p>© 2025 SMP Negeri 1 Sukasada. All rights reserved. Gede Pujana</p>
                 </div>
             </div>
@@ -328,16 +345,18 @@ async function fetchScores() {
 
         data.forEach((item, index) => {
             const li = document.createElement('li');
-            li.className = `grid grid-cols-12 gap-4 py-3 px-6 score-item ${index < 3 ? 'top-score' : ''}`;
-            
-            // Determine rank class
-            const rankClass = index === 0 ? 'rank-1' : 
-                             index === 1 ? 'rank-2' : 
-                             index === 2 ? 'rank-3' : 'rank-other';
+            li.className = `grid grid-cols-12 gap-4 py-3 px-6 score-item ${index < 3 ? 'top-score' : ''} text-enhanced`;
+
+            // Determine rank styling
+            let rankClass = 'rank-other';
+            let rankText = index + 1;
+            if (index === 0) rankClass = 'rank-1';
+            else if (index === 1) rankClass = 'rank-2';
+            else if (index === 2) rankClass = 'rank-3';
 
             li.innerHTML = `
                 <div class="col-span-1 flex justify-center items-center">
-                    <div class="rank-number ${rankClass}">${index + 1}</div>
+                    <div class="rank-number ${rankClass}">${rankText}</div>
                 </div>
                 <div class="col-span-2 flex justify-center items-center text-blue-100">${item.kelas}</div>
                 <div class="col-span-6 name-cell text-blue-50">${item.nama}</div>
@@ -368,7 +387,7 @@ function duplicateList() {
 }
 
 function scrollList() {
-    y -= 1.8;
+    y -= 2.0;
     wrapper.scrollTop = -y;
 
     const listHeight = list.offsetHeight;
